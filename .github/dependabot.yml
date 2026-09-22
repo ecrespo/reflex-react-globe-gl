@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    target-branch: "develop"
+    labels: ["dependencies"]
+    groups:
+      dev-tooling:
+        patterns: ["ruff", "bandit", "pip-audit", "pytest*", "twine", "build"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    target-branch: "develop"
+    labels: ["dependencies", "github-actions"]
