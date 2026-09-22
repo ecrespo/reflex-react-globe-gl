@@ -16,6 +16,8 @@ permissions:
 
 env:
   UV_VERSION: "0.11.7"
+  # Interpreter that generates the committed type stubs (see the `stubs` job).
+  STUB_PYTHON: "3.13"
 
 jobs:
   lint:
@@ -51,14 +53,18 @@ jobs:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
 
+      # Pinned on purpose. The generator renders each docstring from the imported
+      # object's __doc__, and Python 3.13 dedents docstrings at compile time while
+      # 3.12 does not -- so the same source produces a different .pyi per interpreter.
+      # Stubs are generated on ${{ env.STUB_PYTHON }}; see CONTRIBUTING.md.
       - name: Install dependencies
-        run: uv sync --all-extras --frozen
+        run: uv sync --all-extras --frozen --python ${{ env.STUB_PYTHON }}
 
-      # `reflex component build` regenerates react_globe_gl.pyi. The generator imports
-      # every module by dotted path, so the repository root must be on PYTHONPATH --
-      # without it the import silently fails and the stub is never refreshed.
+      # The generator imports every module by dotted path, so the repository root must
+      # be on PYTHONPATH -- without it every import fails, the stub is never refreshed,
+      # and the command still exits 0.
       - name: Regenerate stubs
-        run: PYTHONPATH=. uv run reflex component build
+        run: PYTHONPATH=. uv run --python ${{ env.STUB_PYTHON }} reflex component build
 
       - name: Fail if the committed stub is stale
         run: |

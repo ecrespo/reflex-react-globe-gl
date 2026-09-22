@@ -44,12 +44,19 @@ Node will be caught there — but install Node locally if you touch the wrapper.
 is stale. Regenerate it after changing any prop or event:
 
 ```bash
-PYTHONPATH=. uv run reflex component build
+PYTHONPATH=. uv run --python 3.13 reflex component build
 ```
 
-`PYTHONPATH=.` is required. Without it the stub generator cannot import the modules by
-dotted path, prints `Failed to import ...` for every file, and still exits successfully —
-leaving the stub silently unchanged.
+Both flags matter:
+
+- `PYTHONPATH=.` — without it the generator cannot import the modules by dotted path. It
+  prints `Failed to import ...` for every file, still exits successfully, and leaves the
+  stub silently unchanged.
+- `--python 3.13` — the generator renders docstrings from each imported object's
+  `__doc__`, and Python 3.13 dedents docstrings at compile time while 3.12 does not. The
+  same source therefore yields a different `.pyi` per interpreter. CI regenerates on 3.13
+  (`STUB_PYTHON` in `.github/workflows/ci.yml`); generating on another version produces a
+  spurious diff.
 
 ## Adding a prop
 
