@@ -20,3 +20,9 @@ updates:
     open-pull-requests-limit: 5
     target-branch: "develop"
     labels: ["dependencies", "github-actions"]
+    # One pull request for the whole ecosystem. Ungrouped, a single week of action
+    # releases arrives as five separate PRs that each touch the same workflow files
+    # and invalidate each other's rebase.
+    groups:
+      github-actions:
+        patterns: ["*"]

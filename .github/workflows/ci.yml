@@ -185,6 +185,33 @@ jobs:
           path: dist/
           if-no-files-found: error
 
+  artifact-roundtrip:
+    # release.yml hands the built distributions from its `build` job to the publish
+    # jobs through upload-artifact/download-artifact. Nothing else exercises that
+    # boundary, so a major bump to either action can only fail at release time,
+    # against a tag that is already pushed. Download here what `build` uploaded.
+    name: Artifact handoff
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the distributions built by the previous job
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Assert both distributions survived the round trip
+        run: |
+          python - <<'PY'
+          import glob, sys
+          wheels, sdists = glob.glob("dist/*.whl"), glob.glob("dist/*.tar.gz")
+          if not wheels or not sdists:
+              sys.exit(f"artifact round trip lost files: wheels={wheels} sdists={sdists}")
+          for f in wheels + sdists:
+              print(f"  {f}")
+          print("upload-artifact -> download-artifact round trip OK")
+          PY
+
   demo:
     name: Demo app compiles
     runs-on: ubuntu-latest
