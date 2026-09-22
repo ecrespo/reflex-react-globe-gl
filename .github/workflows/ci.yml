@@ -125,6 +125,24 @@ jobs:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
 
+      - name: Install dependencies
+        run: uv sync --all-extras --frozen
+
+      # PyPI rejects an unknown trove classifier with a 400 at upload time, and
+      # `twine check --strict` does not catch it -- it validates the README, not the
+      # classifier list. Fail here instead of after the release tag is already pushed.
+      - name: Validate trove classifiers
+        run: |
+          uv run python - <<'PY'
+          import sys, tomllib, pathlib
+          from trove_classifiers import classifiers as valid
+          declared = tomllib.loads(pathlib.Path("pyproject.toml").read_text())["project"]["classifiers"]
+          bad = [c for c in declared if c not in valid]
+          if bad:
+              sys.exit(f"not valid PyPI classifiers: {bad}")
+          print(f"all {len(declared)} classifiers are valid")
+          PY
+
       - name: Build sdist and wheel
         run: uv build
 
