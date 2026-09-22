@@ -1,0 +1,8 @@
+include LICENSE
+include README.md
+include CHANGELOG.md
+include tests/conftest.py
+recursive-include custom_components/reflex_react_globe_gl *.js *.pyi py.typed
+prune react_globe_gl_demo/.web
+global-exclude __pycache__/*
+global-exclude *.py[cod]
