@@ -34,7 +34,7 @@ pip install reflex-react-globe-gl
 uv add reflex-react-globe-gl
 ```
 
-Requires `reflex>=0.9.12`. The npm packages (`react-globe.gl@2.38.0`, `three@0.186.0`) are
+Requires Python 3.11+ and `reflex>=0.10.0`. The npm packages (`react-globe.gl@2.38.0`, `three@0.186.0`) are
 installed automatically by Reflex the first time the app compiles.
 
 ## Quick start
@@ -228,8 +228,10 @@ Globe textures are loaded from jsDelivr. To serve them locally, copy the images 
 
 ```bash
 uv pip install -e ".[dev]"
-uv run pytest                      # Python + JS wrapper tests (the latter need node)
-uv run reflex component build      # generates .pyi stubs, builds sdist + wheel into dist/
+uv run pytest                      # Python + JS wrapper tests (the latter need Node 24)
+# regenerate the .pyi stubs (Reflex 0.10 removed `reflex component build`), then build sdist + wheel
+PYTHONPATH=. uv run --python 3.13 python -m reflex_base.utils.pyi_generator custom_components/reflex_react_globe_gl
+uv build
 ```
 
 Project layout:

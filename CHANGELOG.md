@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-25
+
+### Changed
+
+- Require `reflex>=0.10.0` (tested against Reflex 0.10.0). The demo app pins
+  `reflex==0.10.0` and its frontend lockfile is regenerated for Reflex 0.10.
+- **Breaking:** drop Python 3.10 support; `requires-python` is now `>=3.11`, matching
+  Reflex 0.10. CI tests Python 3.11, 3.12 and 3.13.
+- Type stubs are regenerated with `python -m reflex_base.utils.pyi_generator`, since
+  Reflex 0.10 removed `reflex component build`. `CONTRIBUTING.md` and `README.md` document
+  the new command.
+- CI and release workflows run on Node 24: the JS wrapper tests and the demo build use
+  Node 24, and every JavaScript action now runs on the Node 24 runtime
+  (`actions/checkout` v7, `gitleaks-action` v3, `action-gh-release` v3,
+  `dependency-review-action` v5). Node 20 was removed from GitHub-hosted runners.
+- Build backend requires `setuptools>=78.1.1`.
+
 ## [0.1.0] - 2026-09-21
 
 First public release.
@@ -39,5 +56,6 @@ First public release.
   `reflex-components-radix` / `reflex-components-core` packages import — any app using
   `rx.plugins` fails at import time with `ImportError: cannot import name 'CommonTag'`.
 
-[Unreleased]: https://github.com/ecrespo/reflex-react-globe-gl/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/ecrespo/reflex-react-globe-gl/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/ecrespo/reflex-react-globe-gl/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/ecrespo/reflex-react-globe-gl/releases/tag/v0.1.0
