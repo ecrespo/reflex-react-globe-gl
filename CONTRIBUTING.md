@@ -35,7 +35,7 @@ uv run bandit -c pyproject.toml -r custom_components
 ```
 
 The JS tests in `tests/test_wrapper_js.py` run `globe_wrapper.js` under Node and **skip
-silently** if Node is not installed. CI installs Node, so a change that only breaks under
+silently** if Node is not installed. CI installs Node 24, so a change that only breaks under
 Node will be caught there — but install Node locally if you touch the wrapper.
 
 ## Type stubs
@@ -44,10 +44,11 @@ Node will be caught there — but install Node locally if you touch the wrapper.
 is stale. Regenerate it after changing any prop or event:
 
 ```bash
-PYTHONPATH=. uv run --python 3.13 reflex component build
+PYTHONPATH=. uv run --python 3.13 python -m reflex_base.utils.pyi_generator custom_components/reflex_react_globe_gl
 ```
 
-Both flags matter:
+Reflex 0.10 removed the `reflex component build` command, so the stub generator it used to
+wrap (`reflex_base.utils.pyi_generator`) is invoked directly. Both settings matter:
 
 - `PYTHONPATH=.` — without it the generator cannot import the modules by dotted path. It
   prints `Failed to import ...` for every file, still exits successfully, and leaves the
