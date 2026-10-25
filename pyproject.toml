@@ -1,14 +1,14 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=78.1.1", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "reflex-react-globe-gl"
-version = "0.1.0"
+version = "0.2.0"
 description = "react-globe.gl for Reflex: 3D globe data visualization (points, arcs, polygons, paths, heatmaps, hexbins, tiles, particles, rings, labels, HTML markers, 3D objects and custom ThreeJS layers)."
 readme = "README.md"
 license = { text = "MIT" }
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [{ name = "Ernesto Crespo", email = "ecrespo@gmail.com" }]
 keywords = [
     "reflex",
@@ -21,7 +21,7 @@ keywords = [
     "data-visualization",
     "geospatial",
 ]
-dependencies = ["reflex>=0.9.12"]
+dependencies = ["reflex>=0.10.0"]
 # Every entry must exist in the PyPI trove list; the `classifiers` CI step checks it.
 # There is no "Framework :: Reflex" trove classifier -- discovery goes through the
 # `reflex` / `reflex-custom-components` keywords above.
@@ -33,7 +33,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: JavaScript",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -72,7 +71,7 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 120
-target-version = "py310"
+target-version = "py311"
 extend-exclude = [".web", ".venv"]
 
 [tool.ruff.lint]
